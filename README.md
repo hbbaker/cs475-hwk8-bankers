@@ -1,4 +1,4 @@
-# cs475-hwk7-bankers
+# CS475 HW8 - Banker's Algorithm 
 
 ## Work Sharing: 
 
