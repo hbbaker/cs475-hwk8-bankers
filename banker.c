@@ -40,7 +40,7 @@ isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
                 int unsafe = 0;
 
                 // Loops through and checks if the available resources are enough
-                // Flags if not enough and exits
+                // Flags unsafe if not enough resources and exits
                 for (int j = 0; j < m; j++)
                 {
                     if (Need[i][j] > Available[j])
