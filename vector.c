@@ -46,4 +46,9 @@ int *addvector(int *vector1, int *vector2, int rows){
         sum[i]=vector1[i]+vector2[i];
     }
 }
-
+void freematrix(int **matrix,int rows,int cols){
+    for(int i=0;i<rows;i++){
+        free(matrix[i]);
+    }
+    free(matrix);
+}
