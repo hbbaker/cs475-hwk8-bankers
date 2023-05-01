@@ -28,13 +28,6 @@ isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
         Work[k] = 0;
     }
 
-    // Compares the needs to available resources
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-            Need[i][j] = Available[i][j] - Alloc[i][j];
-    }
-
     // Compares all needed values to available
     for (int k = 0; k < 5; k++)
     {
@@ -43,7 +36,8 @@ isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
             // If the thread has not already finished...
             if (Work[i] == 0)
             {
-                int flag = 0;
+                // Used for checking thread completion safety
+                int unsafe = 0;
 
                 // Loops through and checks if the available resources are enough
                 // Flags if not enough and exits
@@ -51,14 +45,14 @@ isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
                 {
                     if (Need[i][j] > Available[j])
                     {
-                        flag = 1;
+                        unsafe = 1;
                         break;
                     }
                 }
 
                 // If there is a sufficient amount of avaiable resources...
                 // Frees up resources and adds the completed thread name to the "answer"
-                if (flag == 0)
+                if (unsafe == 0)
                 {
                     ans[ind++] = i;
                     for (y = 0; y < m; y++)
