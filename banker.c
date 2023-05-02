@@ -88,5 +88,14 @@ isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
         }
         fprintf(" T%d", ans[n - 1]);
     }
+    else
+    {
+        printf("UNSAFE : ");
+        for (int i = 0; i < n - 1; i++)
+        {
+            printf(" T%d ", ans[i]);
+        }
+        fprintf(" T%d", ans[n - 1]);
+    }
     return (0);
 }
