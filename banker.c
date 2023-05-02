@@ -5,7 +5,7 @@
 
 // TODO - Safety Algorithm goes here
 
-isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
+int isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
 {
     // m = number of resource types (3)
     // n = number of threads (5)

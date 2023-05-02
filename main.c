@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 
   int **maxDemandMat;
   int **allocMat;
+  int **needMat;
 
   FILE *input;
 
@@ -26,23 +27,6 @@ int main(int argc, char *argv[])
   // Allocate ints
   // numResources = (int *)malloc(sizeof(int));
   // numProcesses = (int *)malloc(sizeof(int));
-
-  // Allocate Resource Vector
-  resourceVec = (int *)malloc(sizeof(int) * 3);
-
-  // Allocate Max Demand Matrix
-  maxDemandMat = (int **)malloc(sizeof(int *) * 5);
-  for (int i = 0; i < 5; i++)
-  {
-    maxDemandMat[i] = (int *)malloc(sizeof(int) * 3);
-  }
-
-  // Allocate Allocation Matrix
-  allocMat = (int **)malloc(sizeof(int *) * 5);
-  for (int i = 0; i < 5; i++)
-  {
-    allocMat[i] = (int *)malloc(sizeof(int) * 3);
-  }
 
   // Attempt to open input file, if unsuccessful print error and exit.
   if (argc == 2)
@@ -57,6 +41,30 @@ int main(int argc, char *argv[])
 
       fscanf(input, "%d", &numProcesses);
       // printf("Num Processes: %d\n", numProcesses);
+
+      // Allocate Resource Vector
+      resourceVec = (int *)malloc(sizeof(int) * numResources);
+
+      // Allocate Max Demand Matrix
+      maxDemandMat = (int **)malloc(sizeof(int *) * numProcesses);
+      for (int i = 0; i < numProcesses; i++)
+      {
+        maxDemandMat[i] = (int *)malloc(sizeof(int) * numResources);
+      }
+
+      // Allocate Allocation Matrix
+      allocMat = (int **)malloc(sizeof(int *) * numProcesses);
+      for (int i = 0; i < numProcesses; i++)
+      {
+        allocMat[i] = (int *)malloc(sizeof(int) * numResources);
+      }
+
+      // Allocate Need Matrix
+      needMat = (int **)malloc(sizeof(int *) * numProcesses);
+      for (int i = 0; i < numProcesses; i++)
+      {
+        needMat[i] = (int *)malloc(sizeof(int) * numResources);
+      }
 
       for (int i = 0; i < 3; i++)
       {
@@ -112,7 +120,24 @@ int main(int argc, char *argv[])
       //---------------------------------
       fclose(input);
 
-      // TODO: Run banker's safety algorithm
+      // Calculate Need Matrix:
+      for (int i = 0; i < 5; i++)
+      {
+        for (int j = 0; j < 3; j++)
+        {
+          needMat[i][j] = maxDemandMat[i][j] - allocMat[i][j];
+        }
+      }
+
+      if (sanityCheck(resourceVec, maxDemandMat, allocMat, numResources, numProcesses))
+      {
+        // TODO: Run banker's safety algorithm
+        printf("Running Safety Algorithm...\n");
+      }
+      else
+      {
+        return -1;
+      }
     }
     else
     {
@@ -128,4 +153,34 @@ int main(int argc, char *argv[])
   }
 
   return 0;
+}
+
+// returns 1 if sanity check passes 0 if not
+int sanityCheck(int *resources, int **max, int **alloc, int numRes, int numThreads)
+{
+  for (int i = 0; i < numThreads; i++)
+  {
+    for (int k = 0; k < numRes; k++)
+    {
+      if (alloc[i][k] > resources[k])
+      {
+        printf("Integrity Test Failed: allocated resources exceed total resources\n");
+        return 0;
+      }
+    }
+  }
+  for (int i = 0; i < numThreads; i++)
+  {
+    for (int j = 0; j < numRes; j++)
+    {
+      int need = (max[i][j] - alloc[i][j]);
+      if (need < 0)
+      {
+        printf("Integrity Test Failed: Allocated resources exceed demand for Thread %d\n", i);
+        printf("Need %d instances of resource %d\n", need, j);
+        return 0;
+      }
+    }
+  }
+  return 1;
 }
