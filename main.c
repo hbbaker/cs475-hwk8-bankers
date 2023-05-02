@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
       {
         // TODO: Run banker's safety algorithm
         printf("Running Safety Algorithm...\n");
+        isSafe(maxDemandMat, needMat, allocMat);
       }
       else
       {
