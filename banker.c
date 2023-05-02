@@ -81,21 +81,21 @@ isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
     // Write the safe order to the file
     if (safe == 1)
     {
-        FILE *safes = fopen("safe.txt", "w");
-        for (int i = 0; i < n - 1; i++)
-        {
-            fprintf(" T%d ", ans[i]);
-        }
-        fprintf(" T%d", ans[n - 1]);
-    }
-    else
-    {
-        printf("UNSAFE : ");
+        printf("SAFE :");
         for (int i = 0; i < n - 1; i++)
         {
             printf(" T%d ", ans[i]);
         }
-        fprintf(" T%d", ans[n - 1]);
+        printf(" T%d", ans[n - 1]);
+    }
+    else
+    {
+        printf("UNSAFE :");
+        for (int i = 0; i < n - 1; i++)
+        {
+            printf(" T%d ", ans[i]);
+        }
+        printf(" T%d", ans[n - 1]);
     }
     return (0);
 }
