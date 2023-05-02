@@ -112,7 +112,12 @@ int main(int argc, char *argv[])
       //---------------------------------
       fclose(input);
 
-      // TODO: Run banker's safety algorithm
+      if(sanityCheck(resourceVec,maxDemandMat,allocMat,numResources,numProcesses)){
+        // TODO: Run banker's safety algorithm
+      }
+      else{
+        return -1;
+      }
     }
     else
     {
@@ -128,4 +133,26 @@ int main(int argc, char *argv[])
   }
 
   return 0;
+}
+//returns 1 if sanity check passes 0 if not
+int sanityCheck(int *resources, int **max, int **alloc, int numResources, int numThreads){
+  for(int i=0;i<numThreads;i++){
+    for(int k=0;k<numResources;k++){
+      if(max[i][k]>resources[i]){
+        printf("Integrity test failed: allocated resources exceed demand for Thread %d\n",i);
+        return 0;
+      }
+    }
+  }
+  for(int i=0;i<numResources;i++){
+    int resource=0;
+    for(int k=0;k<numThreads;k++){
+      resource+=alloc[i][k];
+    }
+    if (resource>resources[i]){
+      printf("Integrity test failed: allocated resources exceed total resources\n");
+      return 0;
+    }
+  }
+  return 1;
 }
