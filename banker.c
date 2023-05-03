@@ -5,12 +5,12 @@
 
 // TODO - Safety Algorithm goes here
 
-int isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
+int isSafe(int **available, int **alloc, int **need, int numRes, int numProc)
 {
     // m = number of resource types (3)
     // n = number of threads (5)
-    int m = 3;
-    int n = 5;
+    int m = numRes;
+    int n = numProc;
 
     // Worked threads
     int Work[n];
@@ -43,7 +43,7 @@ int isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
                 // Flags unsafe if not enough resources and exits
                 for (int j = 0; j < m; j++)
                 {
-                    if (Need[i][j] > Available[j])
+                    if (need[i][j] > available[j])
                     {
                         unsafe = 1;
                         break;
@@ -56,7 +56,7 @@ int isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
                 {
                     ans[ind++] = i;
                     for (y = 0; y < m; y++)
-                        Available[i][y] += Alloc[i][y];
+                        available[i][y] += alloc[i][y];
                     Work[i] = 1;
                 }
             }
@@ -86,7 +86,7 @@ int isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
         {
             printf(" T%d ", ans[i]);
         }
-        printf(" T%d", ans[n - 1]);
+        printf(" T%d\n", ans[n - 1]);
     }
     else
     {
@@ -95,7 +95,7 @@ int isSafe(int Available[5][3], int Alloc[5][3], int Need[5][3])
         {
             printf(" T%d ", ans[i]);
         }
-        printf(" T%d", ans[n - 1]);
+        printf(" T%d can't finish\n", ans[n - 1]);
     }
     return (0);
 }

@@ -132,8 +132,8 @@ int main(int argc, char *argv[])
       if (sanityCheck(resourceVec, maxDemandMat, allocMat, numResources, numProcesses))
       {
         // TODO: Run banker's safety algorithm
-        printf("Running Safety Algorithm...\n");
-        isSafe(maxDemandMat, needMat, allocMat);
+        // printf("Running Safety Algorithm...\n");
+        isSafe(maxDemandMat, needMat, allocMat, numResources, numProcesses);
       }
       else
       {
@@ -152,6 +152,11 @@ int main(int argc, char *argv[])
     // printf("%d\n", argc);
     return -1;
   }
+
+  freeMatrix(maxDemandMat, numProcesses, numResources);
+  freeMatrix(allocMat, numProcesses, numResources);
+  freeMatrix(needMat, numProcesses, numResources);
+  free(resourceVec);
 
   return 0;
 }
